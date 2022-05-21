@@ -8,13 +8,13 @@ it('should throw an error if input isn\'t typeof string', () => {
   expect(() => validateStringNotEmpty(input)).toThrowError();
 });
 
-it('should throw an error if string is empty', () => {
+it('should throw an error if provided string is empty', () => {
   const input = '';
 
   expect(() => validateStringNotEmpty(input)).toThrowError();
 });
 
-it('should return a string if string isn\'t empty', () => {
+it('should return a string if provided string isn\'t empty', () => {
   const input = 'a';
 
   const result = validateStringNotEmpty(input);
