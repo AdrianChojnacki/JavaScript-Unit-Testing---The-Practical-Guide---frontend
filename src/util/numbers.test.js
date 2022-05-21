@@ -2,15 +2,15 @@ import { it, expect } from 'vitest';
 
 import { transformToNumber } from './numbers';
 
-it('should yield number if provided with number string', () => {
-  const number = '1';
+it('should transform a string number to a number of type number', () => {
+  const input = '1';
 
-  const result = transformToNumber(number);
+  const result = transformToNumber(input);
 
-  expect(result).toBe(Number(number));
+  expect(result).toBeTypeOf('number');
 });
 
-it('should yield NaN if provided with non-number string', () => {
+it('should yield NaN for non-transformable values', () => {
   const input = 'invalid';
 
   const result = transformToNumber(input);
