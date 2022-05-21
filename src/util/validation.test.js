@@ -1,37 +1,65 @@
 import { it, expect } from 'vitest';
 
-import { validateStringNotEmpty, validateNumber } from './validation';
+import { validateNumber, validateStringNotEmpty } from './validation';
 
-it('should throw an error if input isn\'t typeof string', () => {
-  const input = 1;
-
-  expect(() => validateStringNotEmpty(input)).toThrowError();
-});
-
-it('should throw an error if provided string is empty', () => {
+it('should throw an error, if an empty string is provided', () => {
   const input = '';
-
-  expect(() => validateStringNotEmpty(input)).toThrowError();
+  const validationFn = () => validateStringNotEmpty(input);
+  expect(validationFn).toThrow();
 });
 
-it('should return a string if provided string isn\'t empty', () => {
-  const input = 'a';
-
-  const result = validateStringNotEmpty(input);
-
-  expect(result).toBe(input);
+it('should throw an error with a message that contains a reason (must not be empty)', () => {
+  const input = '';
+  const validationFn = () => validateStringNotEmpty(input);
+  expect(validationFn).toThrow(/must not be empty/);
 });
 
-it('should throw an error if input is NaN', () => {
-  const input = 'invalid';
-
-  expect(() => validateNumber(input)).toThrowError();
+it('should throw an error if a long string of blanks is provided', () => {
+  const input = '';
+  const validationFn = () => validateStringNotEmpty(input);
+  expect(validationFn).toThrow();
 });
 
-it('should return a number if input isn\'t NaN', () => {
+it('should throw an error if any other value than a string is provided', () => {
+  const inputNum = 1;
+  const inputBool = true;
+  const inputObj = {};
+
+  const validationFnNum = () => validateStringNotEmpty(inputNum);
+  const validationFnBool = () => validateStringNotEmpty(inputBool);
+  const validationFnObj = () => validateStringNotEmpty(inputObj);
+
+  expect(validationFnNum).toThrow();
+  expect(validationFnBool).toThrow();
+  expect(validationFnObj).toThrow();
+});
+
+it('should not throw an error, if a non-empty string is provided', () => {
+  const input = 'valid';
+  const validationFn = () => validateStringNotEmpty(input);
+  expect(validationFn).not.toThrow();
+});
+
+it('should throw an error if NaN is provided', () => {
+  const input = NaN;
+  const validationFn = () => validateNumber(input);
+  expect(validationFn).toThrow();
+});
+
+it('should throw an error with a message that contains a reason (invalid number)', () => {
+  const input = NaN;
+  const validationFn = () => validateNumber(input);
+  expect(validationFn).toThrow(/Invalid number/);
+});
+
+it('should throw an error if a non-numeric value is provided', () => {
+  const input = '1';
+  const validationFn = () => validateNumber(input);
+  expect(validationFn).toThrow();
+});
+
+it('should not throw an error, if a number is provided', () => {
   const input = 1;
-
-  const result = validateNumber(input);
-
-  expect(result).toBeTypeOf('number');
+  const validationFn = () => validateNumber(input);
+  expect(validationFn).not.toThrow();
 });
